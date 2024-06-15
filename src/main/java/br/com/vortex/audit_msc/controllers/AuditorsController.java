@@ -2,18 +2,16 @@ package br.com.vortex.audit_msc.controllers;
 
 import br.com.vortex.audit_msc.exceptions.ResourceNotFoundException;
 import br.com.vortex.audit_msc.models.Auditors;
-import br.com.vortex.audit_msc.models.Standards;
 import br.com.vortex.audit_msc.services.AuditorsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
-@Controller
+@RestController
 @RequestMapping("/api/auditors")
 public class AuditorsController {
 
