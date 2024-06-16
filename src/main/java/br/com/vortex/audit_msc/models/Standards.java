@@ -1,6 +1,6 @@
 package br.com.vortex.audit_msc.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +18,7 @@ public class Standards {
     private String name;
 
     @ManyToMany(mappedBy = "standards")
-    @JsonBackReference
+    @JsonIgnoreProperties("standards")
     private Set<Auditors> auditors;
 
 }

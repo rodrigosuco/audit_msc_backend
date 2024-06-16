@@ -1,6 +1,7 @@
 package br.com.vortex.audit_msc.models;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,6 +29,7 @@ public class Auditors {
             joinColumns = @JoinColumn(name = "auditor_id"),
             inverseJoinColumns = @JoinColumn(name = "standard_id")
     )
-    @JsonManagedReference
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     private Set<Standards> standards;
+
 }
