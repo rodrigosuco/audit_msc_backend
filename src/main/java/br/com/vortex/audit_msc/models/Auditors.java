@@ -1,6 +1,5 @@
 package br.com.vortex.audit_msc.models;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
