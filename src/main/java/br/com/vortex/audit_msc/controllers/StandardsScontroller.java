@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/audit_standards")
+@RequestMapping("/api/audit-standards")
 public class StandardsScontroller {
 
     @Autowired

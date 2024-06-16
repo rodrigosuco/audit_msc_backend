@@ -2,6 +2,7 @@ package br.com.vortex.audit_msc.controllers;
 
 import br.com.vortex.audit_msc.exceptions.ResourceNotFoundException;
 import br.com.vortex.audit_msc.models.Auditors;
+import br.com.vortex.audit_msc.models.Standards;
 import br.com.vortex.audit_msc.services.AuditorsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,6 +53,16 @@ public class AuditorsController {
             return ResponseEntity.ok(updatedAuditor);
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/add-standard/auditor/{auditorId}/standard/{standardId}")
+    public ResponseEntity assignStandard(@PathVariable Integer auditorId, @PathVariable Integer standardId) {
+        try {
+            auditorsService.addStandardToAuditor(auditorId, standardId);
+            return ResponseEntity.ok("Standard added to Auditor successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("An error occurred: " + e.getMessage());
         }
     }
 
