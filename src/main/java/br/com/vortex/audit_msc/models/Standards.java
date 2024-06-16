@@ -18,7 +18,15 @@ public class Standards {
     private String name;
 
     @ManyToMany(mappedBy = "standards")
-    @JsonIgnoreProperties("standards")
+    @JsonIgnoreProperties({
+            "standards",
+            "street",
+            "city",
+            "state",
+            "postal_code",
+            "country",
+            "airport"
+    })
     private Set<Auditors> auditors;
 
 }
