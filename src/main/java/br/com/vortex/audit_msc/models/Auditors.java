@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -31,5 +33,9 @@ public class Auditors {
 
     @JsonIgnoreProperties("auditors")
     private Set<Standards> standards;
+
+    @ManyToMany(mappedBy = "auditors")
+    @JsonIgnoreProperties("auditors")
+    private Set<Audits> audits = new HashSet<>();
 
 }
