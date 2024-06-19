@@ -30,12 +30,10 @@ public class Auditors {
             joinColumns = @JoinColumn(name = "auditor_id"),
             inverseJoinColumns = @JoinColumn(name = "standard_id")
     )
-
     @JsonIgnoreProperties("auditors")
-    private Set<Standards> standards;
+    private Set<Standards> standards = new HashSet<>();
 
     @ManyToMany(mappedBy = "auditors")
-    @JsonIgnoreProperties("auditors")
+    @JsonIgnoreProperties({"auditors", "standards"})
     private Set<Audits> audits = new HashSet<>();
-
 }

@@ -1,41 +1,48 @@
 package br.com.vortex.audit_msc.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
+import lombok.Data;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "audits")
-@Getter
-@Setter
+@Data
 public class Audits {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    private String activity_name;
-    private LocalDate initial_date;
-    private LocalDate final_date;
-    private Float onsite_days;
-    private Float offsite_days;
+    private Long id;
+
+    private String name;
+
+    private LocalDate initialDate;
+
+    private LocalDate finalDate;
+
+    private Double onSiteManDays;
+
+    private Double offSiteManDays;
 
     @ManyToMany
     @JoinTable(
-            name = "audit_auditors",
-            joinColumns = @JoinColumn(name = "auditor_id"),
-            inverseJoinColumns = @JoinColumn(name = "audit_id")
+            name = "auditor_audit",
+            joinColumns = @JoinColumn(name = "audit_id"),
+            inverseJoinColumns = @JoinColumn(name = "auditor_id")
     )
-    @JsonIgnoreProperties("audits")
     private Set<Auditors> auditors = new HashSet<>();
 
-    @ManyToOne
-    @JoinColumn(name = "standard_id")
-    @JsonIgnoreProperties("audits")
-    private Standards standard;
+    @ManyToMany
+    @JoinTable(
+            name = "standard_audit",
+            joinColumns = @JoinColumn(name = "audit_id"),
+            inverseJoinColumns = @JoinColumn(name = "standard_id")
+    )
+    private Set<Standards> standards = new HashSet<>();
 
+    @Transient
+    private Long auditorIds;
+
+    @Transient
+    private Long standardId;
 }

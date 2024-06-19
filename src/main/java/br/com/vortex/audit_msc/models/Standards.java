@@ -12,7 +12,6 @@ import java.util.Set;
 @Table(name = "standards")
 @Getter
 @Setter
-
 public class Standards {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,10 +28,9 @@ public class Standards {
             "country",
             "airport"
     })
-    private Set<Auditors> auditors;
+    private Set<Auditors> auditors = new HashSet<>();
 
     @OneToMany(mappedBy = "standards")
-    @JsonIgnoreProperties("standards")
+    @JsonIgnoreProperties({"standards", "audits"})
     private Set<Audits> audits = new HashSet<>();
-
 }
