@@ -26,7 +26,8 @@ public class Standards {
             "state",
             "postal_code",
             "country",
-            "airport"
+            "airport",
+            "audits"
     })
     private Set<Auditors> auditors = new HashSet<>();
 

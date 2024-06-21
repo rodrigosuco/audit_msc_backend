@@ -1,5 +1,6 @@
 package br.com.vortex.audit_msc.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDate;
@@ -12,7 +13,7 @@ public class Audits {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private String name;
 
@@ -20,9 +21,9 @@ public class Audits {
 
     private LocalDate finalDate;
 
-    private Double onSiteManDays;
+    private Float onSiteManDays;
 
-    private Double offSiteManDays;
+    private Float offSiteManDays;
 
     @ManyToMany
     @JoinTable(
@@ -30,6 +31,16 @@ public class Audits {
             joinColumns = @JoinColumn(name = "audit_id"),
             inverseJoinColumns = @JoinColumn(name = "auditor_id")
     )
+    @JsonIgnoreProperties({
+            "standards",
+            "street",
+            "city",
+            "state",
+            "postal_code",
+            "country",
+            "airport",
+            "audits"
+    })
     private Set<Auditors> auditors = new HashSet<>();
 
     @ManyToMany
@@ -38,11 +49,7 @@ public class Audits {
             joinColumns = @JoinColumn(name = "audit_id"),
             inverseJoinColumns = @JoinColumn(name = "standard_id")
     )
+    @JsonIgnoreProperties({"standards", "audits","auditors"})
     private Set<Standards> standards = new HashSet<>();
 
-    @Transient
-    private Long auditorIds;
-
-    @Transient
-    private Long standardId;
 }
