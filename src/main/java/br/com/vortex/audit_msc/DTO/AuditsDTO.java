@@ -1,10 +1,11 @@
 package br.com.vortex.audit_msc.DTO;
 
 import java.time.LocalDate;
+import java.util.List;
 
 
-public class AuditSchedulerDTO {
-    private Integer auditor_id;
+public class AuditsDTO {
+    private List<Integer> auditor_id;
 
     private Integer standard_id;
 
@@ -58,11 +59,11 @@ public class AuditSchedulerDTO {
         this.offSiteManDays = offSiteManDays;
     }
 
-    public Integer getAuditor_id() {
+    public List<Integer> getAuditor_id() {
         return auditor_id;
     }
 
-    public void setAuditor_id(Integer auditor_id) {
+    public void setAuditor_id(List<Integer> auditor_id) {
         this.auditor_id = auditor_id;
     }
 

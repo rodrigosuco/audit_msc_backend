@@ -1,6 +1,6 @@
 package br.com.vortex.audit_msc.controllers;
 
-import br.com.vortex.audit_msc.DTO.AuditSchedulerDTO;
+import br.com.vortex.audit_msc.DTO.AuditsDTO;
 import br.com.vortex.audit_msc.exceptions.ResourceNotFoundException;
 import br.com.vortex.audit_msc.models.Audits;
 import br.com.vortex.audit_msc.models.Auditors;
@@ -41,16 +41,20 @@ public class AuditsController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<?> scheduleAudit(@RequestBody AuditSchedulerDTO auditScheduler) {
-        System.out.println("Teste = " + auditScheduler.getAuditor_id());
+    public ResponseEntity<Audits> scheduleAudit(@RequestBody AuditsDTO auditScheduler) {
+
         Set<Auditors> auditors = new HashSet<>();
+
         if (auditScheduler.getAuditor_id() == null) {
             throw new IllegalArgumentException("Auditor ID cannot be null");
         }
 
-        Auditors auditor = auditorsService.findById(auditScheduler.getAuditor_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Auditor not found with id " + auditScheduler.getAuditor_id()));
-        auditors.add(auditor);
+        for (Integer auditorVariable : auditScheduler.getAuditor_id()) {
+            Auditors auditor = auditorsService.findById(auditorVariable)
+                    .orElseThrow(() -> new ResourceNotFoundException("Auditor not found with id " + auditScheduler.getAuditor_id()));
+            auditors.add(auditor);
+            System.out.println(auditorVariable);
+        }
 
         Standards standard = standardsService.findById(auditScheduler.getStandard_id())
                 .orElseThrow(() -> new ResourceNotFoundException("Standard not found with id " + auditScheduler.getStandard_id()));
@@ -66,5 +70,15 @@ public class AuditsController {
 
         Audits newAudit = auditsService.save(audits);
         return ResponseEntity.status(HttpStatus.CREATED).body(newAudit);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteAudit(@PathVariable Integer id) {
+        try {
+            auditsService.deleteAudit(id);
+            return ResponseEntity.noContent().build();
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 }
