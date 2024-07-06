@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @RestController
@@ -40,36 +41,24 @@ public class AuditsController {
         return audit.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
+/*    @PostMapping("/new")
+    public ResponseEntity<Audits> scheduleAudit(@RequestParam("auditor_id") List<Integer> auditor_id,
+                                                @RequestParam("standard_id") List<Integer> standard_id,
+                                                @RequestParam("name") String name,
+                                                @RequestParam("initialDate") LocalDate initialDate,
+                                                @RequestParam("finalDate") LocalDate finalDate,
+                                                @RequestParam("onSiteManDays") Float onSiteManDays,
+                                                @RequestParam("offSiteManDays") Float offSiteManDays) {
+        AuditsDTO auditRequestDTO = new AuditsDTO(auditor_id, standard_id, name, initialDate, finalDate, onSiteManDays,
+                                        offSiteManDays);
+        Audits newAudit = this.auditsService.createAudit(auditRequestDTO);
+        return ResponseEntity.ok(newAudit);
+    }*/
+
     @PostMapping("/new")
-    public ResponseEntity<Audits> scheduleAudit(@RequestBody AuditsDTO auditScheduler) {
-
-        Set<Auditors> auditors = new HashSet<>();
-
-        if (auditScheduler.getAuditor_id() == null) {
-            throw new IllegalArgumentException("Auditor ID cannot be null");
-        }
-
-        for (Integer auditorVariable : auditScheduler.getAuditor_id()) {
-            Auditors auditor = auditorsService.findById(auditorVariable)
-                    .orElseThrow(() -> new ResourceNotFoundException("Auditor not found with id " + auditScheduler.getAuditor_id()));
-            auditors.add(auditor);
-            System.out.println(auditorVariable);
-        }
-
-        Standards standard = standardsService.findById(auditScheduler.getStandard_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Standard not found with id " + auditScheduler.getStandard_id()));
-
-        Audits audits = new Audits();
-        audits.setName(auditScheduler.getName());
-        audits.setInitialDate(auditScheduler.getInitialDate());
-        audits.setFinalDate(auditScheduler.getFinalDate());
-        audits.setOnSiteManDays(auditScheduler.getOnSiteManDays());
-        audits.setOffSiteManDays(auditScheduler.getOffSiteManDays());
-        audits.setAuditors(auditors);
-        audits.setStandards(Collections.singleton(standard));
-
-        Audits newAudit = auditsService.save(audits);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newAudit);
+    public ResponseEntity<Audits> scheduleAudit(@RequestBody AuditsDTO auditRequestDTO) {
+        Audits newAudit = this.auditsService.createAudit(auditRequestDTO);
+        return ResponseEntity.ok(newAudit);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -81,4 +70,16 @@ public class AuditsController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<Audits> editAudit(@RequestParam("auditor_id") Integer auditor_id,
+                                            @RequestParam("standard_id") Integer standard_id,
+                                            @RequestParam("name") String name,
+                                            @RequestParam("initialDate") LocalDate initialDate,
+                                            @RequestParam("finalDate") LocalDate finalDate,
+                                            @RequestParam("onSiteManDays") Float onSiteManDays,
+                                            @RequestParam("offSiteManDays") Float offSiteManDays) {
+    return null;
+    }
+
 }
