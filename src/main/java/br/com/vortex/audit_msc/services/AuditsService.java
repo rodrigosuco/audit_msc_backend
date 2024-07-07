@@ -37,14 +37,14 @@ public class AuditsService {
         Set<Auditors> auditors = new HashSet<>();
         Set<Standards> standards = new HashSet<>();
 
-        //Verifica se o auditor existe
+        // Verifica se o auditor existe e adiciona na lista
         for (Integer auditorId : data.auditor_id()) {
             Auditors auditor = auditorsRepository.findById(auditorId)
                     .orElseThrow(() -> new ResourceNotFoundException("Auditor not found with id " + auditorId));
             auditors.add(auditor);
         }
 
-        //Verifica se a norma existe
+        // Verifica se a norma existe e adiciona na lista
         for (Integer standardId : data.standard_id()) {
             Standards standard = standardsRepository.findById(standardId)
                     .orElseThrow(() -> new ResourceNotFoundException("Standard not found with id " + standardId));
@@ -78,8 +78,60 @@ public class AuditsService {
 
     public void deleteAudit(Integer id) {
         if (!auditsRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Audit not found with id " + id );
+            throw new ResourceNotFoundException("Audit not found with id " + id);
         }
         auditsRepository.deleteById(id);
+    }
+
+    public Audits editAudit(Integer id, AuditsDTO data) {
+        Optional<Audits> audit = auditsRepository.findById(id);
+        if (audit.isPresent()) {
+            Set<Auditors> auditors = new HashSet<>();
+            Set<Standards> standards = new HashSet<>();
+
+            // Verifica se o auditor existe e adiciona na lista
+            if (data.auditor_id() != null ) {
+                for (Integer auditorId : data.auditor_id()) {
+                    Auditors auditor = auditorsRepository.findById(auditorId)
+                            .orElseThrow(() -> new ResourceNotFoundException("Auditor not found with id " + auditorId));
+                    auditors.add(auditor);
+                }
+            }
+            // Verifica se a norma existe e adiciona na lista
+            if (data.standard_id() != null) {
+                for (Integer standardId : data.standard_id()) {
+                    Standards standard = standardsRepository.findById(standardId)
+                            .orElseThrow(() -> new ResourceNotFoundException("Standard not found with id " + standardId));
+                    standards.add(standard);
+                }
+            }
+
+            Audits existingAudit = audit.get();
+            if (data.name() != null) {
+                existingAudit.setName(data.name());
+            }
+            if (data.initialDate() != null) {
+                existingAudit.setInitialDate(data.initialDate());
+            }
+            if (data.finalDate() != null) {
+                existingAudit.setFinalDate(data.finalDate());
+            }
+            if (data.onSiteManDays() != null) {
+                existingAudit.setOnSiteManDays(data.onSiteManDays());
+            }
+            if (data.offSiteManDays() != null) {
+                existingAudit.setOffSiteManDays(data.offSiteManDays());
+            }
+            if (!auditors.isEmpty()) {
+                existingAudit.setAuditors(auditors);
+            }
+            if (!standards.isEmpty()) {
+                existingAudit.setStandards(standards);
+            }
+            return auditsRepository.save(existingAudit);
+        } else {
+            throw new ResourceNotFoundException("Audit not found with id " + id);
+        }
+
     }
 }

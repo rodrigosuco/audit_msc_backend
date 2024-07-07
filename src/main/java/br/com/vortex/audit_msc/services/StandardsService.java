@@ -39,7 +39,9 @@ public class StandardsService {
         Optional<Standards> standard = standardsRepository.findById(id);
         if (standard.isPresent()) {
             Standards existingStandard = standard.get();
-            existingStandard.setName(updatedStandard.getName());
+            if (updatedStandard != null) {
+                existingStandard.setName(updatedStandard.getName());
+            }
             return standardsRepository.save(existingStandard);
         }
         else {

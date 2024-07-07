@@ -41,20 +41,6 @@ public class AuditsController {
         return audit.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-/*    @PostMapping("/new")
-    public ResponseEntity<Audits> scheduleAudit(@RequestParam("auditor_id") List<Integer> auditor_id,
-                                                @RequestParam("standard_id") List<Integer> standard_id,
-                                                @RequestParam("name") String name,
-                                                @RequestParam("initialDate") LocalDate initialDate,
-                                                @RequestParam("finalDate") LocalDate finalDate,
-                                                @RequestParam("onSiteManDays") Float onSiteManDays,
-                                                @RequestParam("offSiteManDays") Float offSiteManDays) {
-        AuditsDTO auditRequestDTO = new AuditsDTO(auditor_id, standard_id, name, initialDate, finalDate, onSiteManDays,
-                                        offSiteManDays);
-        Audits newAudit = this.auditsService.createAudit(auditRequestDTO);
-        return ResponseEntity.ok(newAudit);
-    }*/
-
     @PostMapping("/new")
     public ResponseEntity<Audits> scheduleAudit(@RequestBody AuditsDTO auditRequestDTO) {
         Audits newAudit = this.auditsService.createAudit(auditRequestDTO);
@@ -72,14 +58,13 @@ public class AuditsController {
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<Audits> editAudit(@RequestParam("auditor_id") Integer auditor_id,
-                                            @RequestParam("standard_id") Integer standard_id,
-                                            @RequestParam("name") String name,
-                                            @RequestParam("initialDate") LocalDate initialDate,
-                                            @RequestParam("finalDate") LocalDate finalDate,
-                                            @RequestParam("onSiteManDays") Float onSiteManDays,
-                                            @RequestParam("offSiteManDays") Float offSiteManDays) {
-    return null;
+    public ResponseEntity<?> editAudit(@PathVariable Integer id, @RequestBody AuditsDTO editedAudit) {
+        try {
+            auditsService.editAudit(id, editedAudit);
+            return ResponseEntity.ok(editedAudit);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
 }

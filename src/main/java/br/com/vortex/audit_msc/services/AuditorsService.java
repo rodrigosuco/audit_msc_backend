@@ -45,11 +45,32 @@ public class AuditorsService {
         Optional<Auditors> auditor = auditorsRepository.findById(id);
         if (auditor.isPresent()) {
             Auditors existingAuditor = auditor.get();
-            existingAuditor.setName(updatedAuditor.getName());
+
+            if (updatedAuditor.getName() != null) {
+                existingAuditor.setName(updatedAuditor.getName());
+            }
+            if (updatedAuditor.getStreet() != null) {
+                existingAuditor.setStreet(updatedAuditor.getStreet());
+            }
+            if (updatedAuditor.getCity() != null) {
+                existingAuditor.setCity(updatedAuditor.getCity());
+            }
+            if (updatedAuditor.getState() != null) {
+                existingAuditor.setState(updatedAuditor.getState());
+            }
+            if (updatedAuditor.getPostal_code() != null) {
+                existingAuditor.setPostal_code(updatedAuditor.getPostal_code());
+            }
+            if (updatedAuditor.getCountry() != null) {
+                existingAuditor.setCountry(updatedAuditor.getCountry());
+            }
+            if (updatedAuditor.getAirport() != null) {
+                existingAuditor.setAirport(updatedAuditor.getAirport());
+            }
+
             return auditorsRepository.save(existingAuditor);
-        }
-        else {
-            throw new ResourceNotFoundException("Standard not found with id " + id);
+        } else {
+            throw new ResourceNotFoundException("Auditor not found with id " + id);
         }
     }
 

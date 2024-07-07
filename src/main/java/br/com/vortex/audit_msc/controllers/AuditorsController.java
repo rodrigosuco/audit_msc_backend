@@ -31,7 +31,7 @@ public class AuditorsController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity createAuditor(@RequestBody Auditors auditors) {
+    public ResponseEntity<Auditors> createAuditor(@RequestBody Auditors auditors) {
         Auditors savedAuditors = auditorsService.save(auditors);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedAuditors);
     }
