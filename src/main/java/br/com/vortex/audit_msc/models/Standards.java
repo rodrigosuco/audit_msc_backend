@@ -34,4 +34,8 @@ public class Standards {
     @OneToMany(mappedBy = "standards")
     @JsonIgnoreProperties({"standards", "audits"})
     private Set<Audits> audits = new HashSet<>();
+
+    @ManyToMany(mappedBy = "standards")
+    private Set<Companies> companies = new HashSet<>();
+
 }

@@ -57,7 +57,7 @@ public class AuditorsController {
     }
 
     @PostMapping("/add-standard/auditor/{auditorId}/standard/{standardId}")
-    public ResponseEntity assignStandard(@PathVariable Integer auditorId, @PathVariable Integer standardId) {
+    public ResponseEntity<?> assignStandard(@PathVariable Integer auditorId, @PathVariable Integer standardId) {
         try {
             auditorsService.addStandardToAuditor(auditorId, standardId);
             return ResponseEntity.ok("Standard added to Auditor successfully.");
@@ -65,5 +65,4 @@ public class AuditorsController {
             return ResponseEntity.status(500).body("An error occurred: " + e.getMessage());
         }
     }
-
 }

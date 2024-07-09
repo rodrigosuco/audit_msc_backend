@@ -36,7 +36,6 @@ public class AuditorsService {
         }
         auditorsRepository.deleteById(id);
     }
-
     public Optional<Auditors> findById(Integer id) {
         return auditorsRepository.findById(id);
     }
@@ -87,7 +86,5 @@ public class AuditorsService {
         auditor.setStandards(standards);
 
         auditorsRepository.save(auditor);
-
     }
-
 }
